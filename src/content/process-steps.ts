@@ -154,4 +154,63 @@ src/content/*.ts   — typed data: pricing cards, comparison rows,
 src/components/site/* — PricingCard, ComparisonTable, ProcessStep
 src/app/{page,experten-service-premium,process}/page.tsx`,
   },
+  {
+    id: "fidelity-correction",
+    title: "Get called out for not actually cloning the site",
+    summary:
+      "First homepage draft was on-brand but structurally incomplete — missing sections, icons instead of photos, invented copy. Rebuilt after direct feedback.",
+    detail: `"it's functional and looks ok, but it's not a 1:1 copy of
+the live website. Why?"
+
+Root cause, stated plainly rather than defended: a Non-Goal in
+technical-spec.md ("polish isn't scored" from the case-study
+brief) had quietly expanded to cover "clone fidelity is optional"
+too — those are different things, and the second one was never
+agreed to.
+
+Fix: re-read the reference screenshot section by section against
+the actual build. Found 4 fully-dropped sections (stats row,
+"Steuern einfach machen" photo panel, "Clever vorbereiten. Clever
+sparen", the topic-links section) and several restructured instead
+of reproduced (single full-bleed photo+overlay rendered as two
+side-by-side blocks; multi-row comparison collapsed to 2 rows).
+Rebuilt for structural fidelity, then rewrote technical-spec.md's
+Goals section so "polish isn't scored" can't be misread the same
+way again.`,
+  },
+  {
+    id: "real-content-extraction",
+    title: "Stop guessing copy — extract the real HTML",
+    summary:
+      "Curl'd the live page directly instead of relying on paraphrase or a single screenshot, to get exact copy and real hotlinkable image URLs.",
+    detail: `curl -sL -A "Mozilla/5.0 ..." "https://taxfix.de/" \\
+  -o /tmp/taxfix-live.html
+
+Raw HTML is ~550KB, server-rendered (Next.js — same framework
+family), one long line. A short Python script stripped tags and
+inserted newlines before block elements to get a readable,
+in-order text dump:
+
+  python3 -c "
+  import re
+  html = open('/tmp/taxfix-live.html').read()
+  html = re.sub(r'<script.*?</script>', ' ', html, flags=re.S)
+  html = re.sub(r'<(h1|h2|h3|p|li|button|a|span|div)', r'\\n<\\1', html)
+  text = re.sub(r'<[^>]+>', '', html)
+  ..."
+
+This surfaced real testimonials (5, not invented), real FAQ
+answers, real footer link structure, and — most importantly —
+that "Wieso für Taxfix zahlen" is actually a 3-column ELSTER /
+Basic / Berater-Service feature table, which the first build had
+gotten wrong as a 2-row panel.
+
+A separate regex pass over <img> tags found the real photos are
+served from Taxfix's own public Frontify CDN
+(cdn-assets-dynamic.frontify.com) — hotlinkable, no auth. Verified
+each URL individually with curl before wiring it in. Whether to
+hotlink vs. self-host vs. keep placeholders was a real decision,
+not something to pick silently again after the fidelity feedback —
+asked directly, got "hotlink the real CDN URLs," implemented it.`,
+  },
 ];

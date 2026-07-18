@@ -33,7 +33,8 @@ Narrow and specific — do not read these as license to skip layout/section fide
 - No real checkout/payment flow on the premium landing page — CTA can exist, doesn't need to submit anything.
 - No auth, no user accounts.
 - No pixel-perfect reproduction of the real Taxfix wordmark/icon-mark artwork (per the brand-kit's licensing caveat) — a simplified text/geometric lockup stands in for the trademarked logo.
-- No licensed Taxfix photography or unverified stock images — real photo sections are reproduced as clearly-placeholder photo panels (correct aspect ratio and position, not real or pretend-real images), per `src/components/site/photo-placeholder.tsx`. This affects imagery only, not section count, order, or layout composition, all of which should still match the live page.
+- No self-hosted copies of Taxfix's photography — real images are **hotlinked directly from Taxfix's own public Frontify CDN** (decision made explicitly with the project owner, see `src/content/images.ts`), not downloaded/stored in this repo and not replaced with placeholders. `src/components/site/photo-placeholder.tsx` still exists as a graceful fallback (renders a styled gradient block) for any slot without a real image URL, not as the default treatment.
+- Copy for the cloned homepage is the **real German copy extracted from the live HTML** (`curl` + a Python tag-stripper, see the process page), not paraphrased — including testimonials, FAQ answers, footer links, and the feature-comparison table, which turned out to be a real 3-column ELSTER/Basic/Berater-Service table, not the 2-row panel first assumed.
 
 ## Current System
 

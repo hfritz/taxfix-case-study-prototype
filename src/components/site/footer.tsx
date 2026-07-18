@@ -1,21 +1,22 @@
 import Link from "next/link";
+import { aiCraftedBadge } from "@/content/images";
 
 const columns = [
   {
     heading: "Produkt",
-    links: ["Experten-Service", "Premium Experten-Service", "Basic", "Steuerrechner"],
+    links: ["So funktioniert's", "Kosten", "Experten-Service", "Sicherheit", "AGB"],
   },
   {
     heading: "Unternehmen",
-    links: ["Über uns", "Karriere", "Presse", "Rebrand"],
+    links: ["Über", "Karriere", "Presse", "Kontakt", "Impressum"],
   },
   {
     heading: "Hilfe",
-    links: ["Häufige Fragen", "Kontakt", "Steuerlexikon"],
+    links: ["Support Center", "Steuer-Ratgeber"],
   },
   {
-    heading: "Mehr",
-    links: ["Datenschutz", "Impressum", "AGB"],
+    heading: "Premium",
+    links: ["Premium Experten-Service", "Vergleich zum Experten-Service", "Prozess & Prompts"],
   },
 ];
 
@@ -35,9 +36,18 @@ export function SiteFooter() {
   return (
     <footer className="bg-black text-neutral-light mt-auto">
       <div className="mx-auto max-w-6xl px-6 py-16">
-        <div className="mb-12 flex items-center gap-3">
-          <LogoIconTile />
-          <span className="text-lg font-bold text-white">taxfix</span>
+        <div className="mb-12 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <LogoIconTile />
+            <span className="text-lg font-bold text-white">taxfix</span>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={aiCraftedBadge.src}
+            alt={aiCraftedBadge.alt}
+            loading="lazy"
+            className="h-8 w-auto opacity-90"
+          />
         </div>
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {columns.map((col) => (
@@ -59,8 +69,8 @@ export function SiteFooter() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-xs text-neutral-vivid sm:flex-row sm:items-center sm:justify-between">
           <p>
-            Unofficial prototype for a Taxfix product case study — not affiliated with or
-            endorsed by Taxfix.
+            © Taxfix SE — Unofficial prototype for a Taxfix product case study, not
+            affiliated with or endorsed by Taxfix.
           </p>
           <p>
             Built by{" "}

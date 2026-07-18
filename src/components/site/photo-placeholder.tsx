@@ -17,23 +17,49 @@ const toneClasses = {
 };
 
 /**
- * Stand-in for real Taxfix lifestyle photography, which isn't licensed for
- * reuse here. Sized/positioned to match the real page's photo slots so the
- * layout is faithful even though the imagery itself is a placeholder.
+ * Real Taxfix photography, hotlinked from their own public Frontify CDN
+ * (see specs/technical-spec.md — decision to hotlink rather than self-host
+ * or use icon placeholders, made explicitly with the project owner).
+ * Falls back to a styled gradient placeholder when no `src` is given.
  */
 export function PhotoPlaceholder({
   icon: Icon,
+  src,
+  alt = "",
   aspect = "video",
   tone = "light",
   className,
   rounded = "rounded-3xl",
 }: {
   icon: LucideIcon;
+  src?: string;
+  alt?: string;
   aspect?: Aspect;
   tone?: keyof typeof toneClasses;
   className?: string;
   rounded?: string;
 }) {
+  if (src) {
+    return (
+      <div
+        className={cn(
+          "relative overflow-hidden bg-neutral-calm",
+          aspectClasses[aspect],
+          rounded,
+          className
+        )}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className="size-full object-cover"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       className={cn(

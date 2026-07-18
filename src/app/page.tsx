@@ -3,14 +3,12 @@ import {
   Sparkles,
   BookOpenCheck,
   ShieldCheck,
-  Calendar,
   Briefcase,
   Users,
+  Smartphone,
   Check,
-  Star,
   Award,
   Download,
-  Smartphone,
   Wallet,
   Sofa,
   FolderCheck,
@@ -22,46 +20,78 @@ import { PhotoPlaceholder } from "@/components/site/photo-placeholder";
 import { FaqItem } from "@/components/site/faq-item";
 import { pricingCards } from "@/content/pricing";
 import { cn } from "@/lib/utils";
+import {
+  heroImage,
+  selfEmployedImage,
+  expertServiceImage,
+  basicImage,
+  whyCardImage,
+  easyTaxesImage,
+  saveDocumentsImage,
+  elsterBadge,
+  finanztipBadge,
+  ratingsBadge,
+} from "@/content/images";
 
 const whyCards = [
   {
     icon: Sparkles,
     title: "Einfach einfach",
-    body: "Schritt für Schritt durch die Steuererklärung — ohne Fachchinesisch.",
+    body: "Schritt für Schritt zur erledigten Steuer – ganz ohne Behördendeutsch, Vorwissen oder Stress.",
+    image: whyCardImage,
   },
   {
     icon: BookOpenCheck,
     title: "Aktuelles Know-how",
-    body: "Immer auf dem neuesten Stand der Steuergesetze.",
-    badge: "50 € Sparpotenzial im Schnitt",
+    body: "Unsere App wurde von Steuerprofis entwickelt – für eine sichere und korrekte Abgabe.",
+    badge: "ø 1.240 € zurück",
   },
   {
     icon: ShieldCheck,
     title: "In sicheren Händen",
-    body: "Geprüft, ELSTER-zertifiziert, Made in Germany.",
+    body: "Deine Daten sind bei uns bestens geschützt – dank modernster Verschlüsselung und sicherer Übermittlung.",
   },
 ];
 
 const stats = [
-  { icon: Download, value: "10+ Mio.", label: "App-Downloads", tone: "blue" as const },
-  { icon: Wallet, value: "1.240 €", label: "Ø Erstattung pro Nutzer:in", tone: "lilac" as const },
-  { icon: Star, value: "4,5 / 5", label: "Bewertung im App Store", tone: "gold" as const },
+  {
+    icon: Download,
+    value: "10 Mio.+",
+    label: "eingereichte Steuererklärungen, mit über 5 Mrd. € Rückerstattungen insgesamt",
+    tone: "blue" as const,
+  },
+  { icon: Users, value: "Steuerexpert*innen", label: "arbeiten bei Taxfix", tone: "lilac" as const },
+  { icon: Wallet, value: "Mitarbeitende", label: "zählt Taxfix aktuell", tone: "gold" as const },
 ];
 
 const supportedCases = [
-  "Angestellte & Rentner:innen",
-  "Studierende & Azubis",
-  "Selbstständige (Basic)",
-  "Vermietung & Verpachtung (Inland)",
-  "Kapitalerträge",
-  "Kurzarbeit & Elterngeld",
+  "Angestellte",
+  "Familien",
+  "Studierende",
+  "Rentner*innen",
+  "Vermieter ohne Umsatzsteuerpflicht",
+  "Selbständige, die unter die Kleinunternehmer-Regelung fallen",
+  "Umsatzsteuervoranmeldung für Unternehmer*innen",
+  "Selbständige und Gewerbetreibende",
+];
+
+const notYetSupportedCases = [
+  "Pensionen als Beamt*in",
+  "Einkünfte aus Forst- und Landwirtschaft",
+  "Ganzjähriger Wohnsitz im Ausland",
+  "Wohnsitze in zwei Ländern gleichzeitig",
+  "Ausländische Einkünfte",
 ];
 
 const comparisonRows = [
-  { label: "Verständliche Erklärungen statt Amtsdeutsch", elster: false, taxfix: true },
-  { label: "Automatische Erkennung von Sparmöglichkeiten", elster: false, taxfix: true },
-  { label: "Persönliche Prüfung durch Expert:innen", elster: false, taxfix: true },
-  { label: "Direkter Support bei Rückfragen", elster: false, taxfix: true },
+  { label: "Komplett digitaler Prozess von Anfang bis Ende", elster: false, basic: true, expert: true },
+  { label: "Offizielle ELSTER-Schnittstelle", elster: true, basic: true, expert: true },
+  { label: "Einfach verständlich, ohne Steuersprache", elster: false, basic: true, expert: true },
+  { label: "Dokumente speichern, kategorisieren und so clever Steuern sparen", elster: false, basic: true, expert: true },
+  { label: "Vermittlung eine*r Expert*in in Sekunden, keine lange Suche", elster: false, basic: false, expert: true },
+  { label: "Expert*innen optimieren deine Steuer", elster: false, basic: false, expert: true },
+  { label: "Expert*innen-Chat, auch nach der Abgabe", elster: false, basic: false, expert: true },
+  { label: "Automatische Status-Updates zum Fortschritt", elster: false, basic: true, expert: true },
 ];
 
 const testimonials = [
@@ -69,64 +99,65 @@ const testimonials = [
     name: "Janina S.",
     source: "Google Play Store",
     quote:
-      "Super einfach erklärt, schnelle Erstattung und ich musste mir keine Sorgen um Fehler machen.",
+      "Super App! Man kann immer wieder in die einzelnen Sparten umswitchen um zu korrigieren! Und das Ergebnis stimmt, das Finanzamt zahlt exakt die Summe aus, die in der App berechnet wurde!",
   },
   {
-    name: "Florian S.",
+    name: "DJ Patrice",
     source: "Apple App Store",
     quote:
-      "Endlich eine Steuer-App, die mir wirklich erklärt, warum ich etwas eintragen soll.",
+      "Mein Fazit: Tolle, einfache und vor allem übersichtliche App, die absolut auf den 'Anti'-Steuerberater unter uns zugeschnitten ist. Auf jeden Fall zu empfehlen. Absolut Klasse.",
   },
   {
-    name: "Michael R.",
+    name: "Chiara H.",
     source: "Google Play Store",
-    quote: "In 20 Minuten fertig, was ich sonst tagelang vor mir hergeschoben habe.",
+    quote:
+      "Ich war immer skeptisch was so Apps an ging, aber auch zu faul so mega zeitaufwändige Steuerklärungen zu machen. Das erste Mal gemacht und ich muss sagen, mega easy, hätte ich nicht gedacht!",
   },
 ];
 
 const faqs = [
   {
-    q: "Was ist der Steuerbescheid?",
-    a: "Der Steuerbescheid ist die offizielle Mitteilung des Finanzamts über das Ergebnis deiner Steuererklärung — inklusive Erstattung oder Nachzahlung.",
+    q: "Wann ist die Steuerfrist?",
+    a: "Die Steuerfrist für 2025 endet am 31.07.2026! Verliere also keine Zeit und gib deine Steuererklärung schnell mit Taxfix Basic ab oder verlängere die Frist mit dem Experten-Service.",
   },
   {
-    q: "Wie hoch ist meine Steuererstattung?",
-    a: "Das hängt von deiner individuellen Situation ab. Taxfix schätzt deine Erstattung während der Eingabe.",
+    q: "Was ist Taxfix?",
+    a: "Mit Taxfix kommst du auf zwei Wegen zu deiner Steuererklärung: Fülle das einfache Frage-Antwort-Verfahren per App/Browser aus oder lass die Steuer mit dem Experten-Service von unabhängigen Steuerberater*innen machen.",
   },
   {
-    q: "Wer braucht keine Steuererklärung?",
-    a: "Angestellte ohne Nebeneinkünfte sind oft nicht verpflichtet — eine Abgabe lohnt sich aber trotzdem meistens.",
+    q: "Wer kann Taxfix nutzen?",
+    a: "Arbeitnehmer:innen, Studierende & Auszubildende, Rentner:innen, Eltern, Arbeitssuchende, Vermieter:innen, Personen mit Nebenjobs sowie Kleinunternehmer:innen & Selbstständige.",
   },
   {
-    q: "Wann ist die Abgabefrist?",
-    a: "Für die Steuererklärung 2025 ist die reguläre Frist der 31.07.2026.",
+    q: "Wie funktioniert Taxfix?",
+    a: "Beim Experten-Service bereiten unabhängige Steuerberater*innen deine Erklärung vor. Machst du sie selbst, beantwortest du durchschnittlich 70 Fragen und siehst sofort deine geschätzte Erstattung.",
   },
   {
-    q: "Welche Steuerfälle unterstützt Taxfix?",
-    a: "Von Angestellten bis Basic-Selbstständigkeit — komplexere Fälle mit Auslandsbezug deckt der neue Premium Experten-Service ab.",
+    q: "Wieviel kostet Taxfix?",
+    a: "Taxfix Basic kostet ab 39,99 €, wenn du deine Steuererklärung selbst erstellst. Den Experten-Service kannst du ab 99,99 € nutzen.",
   },
   {
-    q: "Wie funktioniert der Experten-Service?",
-    a: "Du beantwortest ein paar Fragen, wirst mit einer:m Steuerberater:in gematcht und bekommst eine geprüfte Erklärung zur Freigabe.",
+    q: "Wo finde ich Steuertipps?",
+    a: "Bei erklärungsbedürftigen Fragen bietet Taxfix Infotexte und Ratgeberbeiträge in den Steuertipps an.",
   },
 ];
 
 const topicColumns = [
   {
     heading: "Steuererklärung für",
-    links: ["Angestellte", "Studierende", "Rentner:innen", "Selbstständige", "Familien"],
+    links: ["Studierende", "Azubis", "Beamt*innen", "Familien", "Rentner*innen", "Expats"],
   },
   {
-    heading: "Abgabefristen",
-    links: ["Frist 2025", "Verlängerung beantragen", "Fristversäumnis", "Einspruch einlegen"],
+    heading: "Steuer-Hinweise",
+    links: ["Abgabefristen", "Steuerrechner", "Brutto-Netto-Rechner", "Kurzarbeit", "Rückwirkende Abgabe"],
   },
   {
-    heading: "Steuer-Themen",
-    links: ["Werbungskosten", "Sonderausgaben", "Homeoffice-Pauschale", "Handwerkerkosten"],
+    heading: "Steuer-Tools",
+    links: ["Steuer-Software", "Steuer-App", "Taxfix-Vergleich", "ELSTER", "Grundsteuererklärung"],
   },
   {
-    heading: "Weitere Ratgeber",
-    links: ["Steuerklassen", "ELSTER-Zertifikat", "Steuer-ID finden", "Kindergeld"],
+    heading: "Steuererklärung machen",
+    links: ["Dein kompletter Guide", "Steuererklärung online selber machen", "Steuererklärung 2025"],
   },
 ];
 
@@ -137,38 +168,60 @@ export default function Home() {
       <Section tone="light" fullBleed className="pt-20 pb-20">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-2">
           <div>
-            <h1 className="font-heading text-ever-green-very-dark text-4xl leading-tight md:text-5xl">
+            <p className="text-ever-green-dark text-sm font-bold">
+              Im Schnitt 1.240 € zurück — aber nur wer einreicht, kriegt sie. Frist ist der
+              31.07.!
+            </p>
+            <h1 className="font-heading text-ever-green-very-dark mt-3 text-4xl leading-tight md:text-5xl">
               Die Abgabefrist rückt näher.
             </h1>
             <p className="text-ever-green-very-dark mt-6 max-w-md text-lg">
-              Mach jetzt deine Steuererklärung, bevor der 31.07.2026 da ist — mit
-              durchschnittlich 1.240 € Erstattung.
+              Reiche deine Steuererklärung pünktlich ein, vermeide Strafen und hol dir
+              deine Rückerstattung — bevor es zu spät ist.
             </p>
             <Button size="lg" className="mt-8 rounded-full" asChild>
               <Link href="#preise">Jetzt kostenlos starten</Link>
             </Button>
+            <p className="text-neutral-vivid mt-6 text-sm">
+              Flexibel einreichen: Für Smartphone und Computer
+              <br />
+              Deutschlands beliebteste mobile Steuer-App: +10 Mio eingereichten
+              Steuererklärungen
+            </p>
           </div>
-          <div className="bg-ever-green-vivid mx-auto flex aspect-square w-full max-w-xs flex-col items-center justify-center rounded-[2.5rem]">
-            <Calendar className="text-ever-green-very-dark size-12" />
-            <p className="font-heading text-ever-green-very-dark mt-4 text-6xl">31</p>
-            <p className="text-ever-green-very-dark text-lg font-bold">Juli SteuerFrist</p>
-          </div>
+          <PhotoPlaceholder
+            icon={Smartphone}
+            src={heroImage.src}
+            alt={heroImage.alt}
+            aspect="square"
+            className="mx-auto w-full max-w-xs rounded-[2.5rem]"
+          />
         </div>
       </Section>
 
       {/* 2. Warum Taxfix zu dir passt */}
       <Section tone="white">
         <Eyebrow>Warum Taxfix</Eyebrow>
-        <h2 className="font-heading text-ever-green-very-dark mb-10 text-3xl">
+        <h2 className="font-heading text-ever-green-very-dark text-3xl">
           Warum Taxfix zu dir passt
         </h2>
+        <p className="text-neutral-vivid mt-2 mb-10">
+          Einfach, sicher, lohnenswert: So geht Steuer mit Taxfix.
+        </p>
         <div className="grid gap-6 md:grid-cols-3">
-          {whyCards.map(({ icon: Icon, title, body, badge }) => (
+          {whyCards.map(({ icon: Icon, title, body, badge, image }) => (
             <div
               key={title}
               className="overflow-hidden rounded-3xl border border-neutral-calm bg-white"
             >
-              <PhotoPlaceholder icon={Icon} aspect="video" tone="light" rounded="rounded-none" />
+              <PhotoPlaceholder
+                icon={Icon}
+                src={image?.src}
+                alt={image?.alt}
+                aspect="video"
+                tone="light"
+                rounded="rounded-none"
+              />
               <div className="p-6">
                 {badge && (
                   <span className="bg-ever-green-vivid text-ever-green-very-dark mb-3 inline-block rounded-full px-3 py-1 text-xs font-bold">
@@ -186,12 +239,23 @@ export default function Home() {
       {/* 3. Die Steuerplattform jetzt auch für Selbstständige — full-bleed photo overlay */}
       <Section tone="white">
         <div className="relative overflow-hidden rounded-3xl">
-          <PhotoPlaceholder icon={Briefcase} aspect="wide" tone="dark" rounded="rounded-none" />
+          <PhotoPlaceholder
+            icon={Briefcase}
+            src={selfEmployedImage.src}
+            alt={selfEmployedImage.alt}
+            aspect="wide"
+            tone="dark"
+            rounded="rounded-none"
+          />
           <div className="bg-ever-green-very-dark/90 absolute bottom-6 left-6 max-w-sm rounded-2xl p-6 backdrop-blur-sm">
             <Eyebrow className="text-ever-green-vivid">Für Selbstständige</Eyebrow>
             <h2 className="font-heading text-xl text-white md:text-2xl">
               Die Steuerplattform jetzt auch für Selbstständige.
             </h2>
+            <p className="mt-2 text-sm text-neutral-light/80">
+              Ob USt-pflichtig oder Kleinunternehmer*in: Taxfix für Selbständige macht
+              deinen Steuer-Workflow einfacher.
+            </p>
             <Button variant="secondary" size="sm" className="mt-4 rounded-full" asChild>
               <Link href="#preise">Mehr erfahren</Link>
             </Button>
@@ -213,7 +277,7 @@ export default function Home() {
               )}
             >
               <Icon className="text-ever-green-very-dark size-6" />
-              <p className="font-heading text-ever-green-very-dark mt-4 text-4xl">{value}</p>
+              <p className="font-heading text-ever-green-very-dark mt-4 text-2xl">{value}</p>
               <p className="text-ever-green-very-dark mt-1 text-sm">{label}</p>
             </div>
           ))}
@@ -230,25 +294,49 @@ export default function Home() {
             </h2>
           </div>
           <Button variant="outline" className="rounded-full" asChild>
-            <Link href="#preise">Alle Steuerfälle ansehen</Link>
+            <Link href="#preise">Jetzt kostenlos loslegen</Link>
           </Button>
         </div>
-        <div className="mt-8 grid gap-4 rounded-3xl border border-neutral-calm bg-white p-8 sm:grid-cols-2">
-          {supportedCases.map((item) => (
-            <div key={item} className="flex items-center gap-2">
-              <Check className="text-ever-green-dark size-4" />
-              <span className="text-ever-green-very-dark text-sm">{item}</span>
-            </div>
-          ))}
-        </div>
-        <p className="text-neutral-vivid mt-4 text-sm">
-          Für komplexere Fälle — Selbstständigkeit mit Regelbesteuerung, internationale
-          Steuerfälle — gibt es jetzt den{" "}
-          <Link href="/experten-service-premium" className="text-ever-green-dark underline">
-            Premium Experten-Service
-          </Link>
-          .
+        <p className="text-neutral-vivid mt-4 max-w-2xl text-sm">
+          Wir arbeiten stetig daran, unsere Plattform auszubauen. Hier eine Übersicht der
+          aktuell unterstützten und noch nicht verfügbaren Steuerfälle — jetzt auch für
+          Selbständige!
         </p>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+          <div className="rounded-3xl border border-neutral-calm bg-white p-8">
+            <h3 className="text-ever-green-very-dark mb-4 text-sm font-bold">
+              Unterstützt
+            </h3>
+            <div className="space-y-3">
+              {supportedCases.map((item) => (
+                <div key={item} className="flex items-start gap-2">
+                  <Check className="text-ever-green-dark mt-0.5 size-4 shrink-0" />
+                  <span className="text-ever-green-very-dark text-sm">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-3xl border border-neutral-calm bg-white p-8">
+            <h3 className="text-neutral-vivid mb-4 text-sm font-bold">
+              Noch nicht verfügbar
+            </h3>
+            <div className="space-y-3">
+              {notYetSupportedCases.map((item) => (
+                <div key={item} className="flex items-start gap-2">
+                  <span className="text-neutral-vivid mt-0.5">—</span>
+                  <span className="text-neutral-vivid text-sm">{item}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-ever-green-dark mt-4 text-sm">
+              Auslandsbezug mit Selbstständigkeit? Dafür gibt es jetzt den{" "}
+              <Link href="/experten-service-premium" className="underline">
+                Premium Experten-Service
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
       </Section>
 
       {/* 6. Faire Preise, Top-Leistung — the modified section */}
@@ -258,8 +346,8 @@ export default function Home() {
           Faire Preise, Top-Leistung
         </h2>
         <p className="text-neutral-vivid mb-10 max-w-2xl">
-          Du entscheidest, wie viel Unterstützung du brauchst — von Basic bis zum neuen
-          Premium Experten-Service für Selbstständige mit Auslandsbezug.
+          So individuell wie deine Steuer: Wähle genau die Lösung, die zu dir und deinen
+          Bedürfnissen passt.
         </p>
         <div className="grid gap-6 md:grid-cols-3">
           {pricingCards.map((card) => (
@@ -271,32 +359,52 @@ export default function Home() {
       {/* 7. Perfekt für dich gemacht */}
       <Section tone="calm">
         <Eyebrow>Für dich gemacht</Eyebrow>
-        <h2 className="font-heading text-ever-green-very-dark mb-10 text-3xl">
+        <h2 className="font-heading text-ever-green-very-dark text-3xl">
           Perfekt für dich gemacht
         </h2>
+        <p className="text-neutral-vivid mt-2 mb-10">
+          Selbst machen oder machen lassen? In beiden Fällen bist du bei uns richtig.
+        </p>
         <div className="grid gap-6 md:grid-cols-2">
           <div className="overflow-hidden rounded-3xl bg-white">
-            <PhotoPlaceholder icon={Users} aspect="video" tone="vivid" rounded="rounded-none" />
+            <PhotoPlaceholder
+              icon={Users}
+              src={expertServiceImage.src}
+              alt={expertServiceImage.alt}
+              aspect="video"
+              tone="vivid"
+              rounded="rounded-none"
+            />
             <div className="p-6">
               <h3 className="text-ever-green-very-dark font-heading text-xl">
                 Steuer vom Experten-Service machen lassen
               </h3>
               <p className="text-neutral-vivid mt-2 text-sm">
-                Steuerberater:in übernimmt deinen Fall komplett.
+                Minimaler Aufwand, optimales Ergebnis. Unabhängige Steuerexpert*innen
+                bereiten deine Erklärung vor — 100 % digital und zum fairen Preis.
               </p>
               <Button variant="link" className="text-ever-green-dark mt-2 px-0" asChild>
-                <Link href="#preise">Mehr zum Experten-Service</Link>
+                <Link href="#preise">Steuer machen lassen</Link>
               </Button>
             </div>
           </div>
           <div className="overflow-hidden rounded-3xl bg-white">
-            <PhotoPlaceholder icon={Smartphone} aspect="video" tone="light" rounded="rounded-none" />
+            <PhotoPlaceholder
+              icon={Smartphone}
+              src={basicImage.src}
+              alt={basicImage.alt}
+              aspect="video"
+              tone="light"
+              rounded="rounded-none"
+            />
             <div className="p-6">
               <h3 className="text-ever-green-very-dark font-heading text-xl">
                 Basic: Steuer einfach selber machen
               </h3>
               <p className="text-neutral-vivid mt-2 text-sm">
-                Einfach in Minuten selbst erledigen, Schritt für Schritt geführt.
+                Erledigt in Minuten, nicht Monaten. Fotografiere deine
+                Lohnsteuerbescheinigung und sieh sofort deine Erstattung — kostenlos, bis
+                zur Abgabe.
               </p>
               <Button variant="link" className="text-ever-green-dark mt-2 px-0" asChild>
                 <Link href="#preise">Mehr zu Basic erfahren</Link>
@@ -306,62 +414,79 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* 8. Wieso für Taxfix zahlen, obwohl Elster kostenlos ist? */}
+      {/* 8. Wieso für Taxfix zahlen, obwohl Elster kostenlos ist? — real 3-column feature table */}
       <Section tone="white">
-        <div className="grid items-center gap-10 md:grid-cols-2">
-          <div>
-            <h2 className="font-heading text-ever-green-very-dark text-3xl">
-              Wieso für Taxfix zahlen, obwohl Elster kostenlos ist?
-            </h2>
-            <p className="text-neutral-vivid mt-4 max-w-md">
-              Taxfix führt dich verständlich durch jede Frage, erkennt Sparmöglichkeiten
-              automatisch und bietet Expert:innen-Unterstützung, wo Elster dich allein
-              lässt.
-            </p>
-          </div>
-          <div className="rounded-3xl border border-neutral-calm bg-neutral-light p-2">
-            <div className="grid grid-cols-3 gap-2 px-4 pt-4 text-xs font-bold">
-              <span className="text-neutral-vivid" />
-              <span className="text-neutral-vivid text-center">ELSTER</span>
-              <span className="text-ever-green-very-dark text-center">Taxfix</span>
-            </div>
-            {comparisonRows.map((row) => (
-              <div
-                key={row.label}
-                className="grid grid-cols-3 items-center gap-2 border-t border-neutral-calm px-4 py-3"
-              >
-                <span className="text-ever-green-very-dark text-xs">{row.label}</span>
-                <span className="flex justify-center">
-                  {row.elster ? (
-                    <Check className="text-ever-green-dark size-4" />
-                  ) : (
-                    <span className="text-neutral-vivid">—</span>
-                  )}
-                </span>
-                <span className="flex justify-center">
-                  {row.taxfix ? (
-                    <Check className="text-ever-green-dark size-4" />
-                  ) : (
-                    <span className="text-neutral-vivid">—</span>
-                  )}
-                </span>
-              </div>
-            ))}
-          </div>
+        <Eyebrow>Im Vergleich</Eyebrow>
+        <h2 className="font-heading text-ever-green-very-dark mb-2 text-3xl">
+          Wieso für Taxfix zahlen, obwohl Elster kostenlos ist?
+        </h2>
+        <p className="text-neutral-vivid mb-8 max-w-2xl">
+          Mit Deutschlands beliebtester mobiler Steuer-App sparst du bei deiner
+          Steuererklärung — im Schnitt 1.240 € Erstattung, ganz ohne Steuerwissen oder
+          Stress.
+        </p>
+        <div className="overflow-x-auto rounded-3xl border border-neutral-calm bg-neutral-light">
+          <table className="w-full min-w-[640px] border-collapse">
+            <thead>
+              <tr className="border-b border-neutral-calm text-left">
+                <th className="p-5 text-sm font-bold text-neutral-vivid">&nbsp;</th>
+                <th className="p-5 text-center text-sm font-bold text-neutral-vivid">ELSTER</th>
+                <th className="p-5 text-center text-sm font-bold text-ever-green-very-dark">
+                  Taxfix Basic
+                </th>
+                <th className="bg-ever-green-light p-5 text-center text-sm font-bold text-ever-green-very-dark">
+                  Taxfix Berater-Service
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonRows.map((row, i) => (
+                <tr
+                  key={row.label}
+                  className={cn("border-b border-neutral-calm", i % 2 === 0 ? "bg-white" : "bg-neutral-light")}
+                >
+                  <td className="text-ever-green-very-dark p-5 text-sm">{row.label}</td>
+                  <td className="p-5 text-center">
+                    {row.elster ? <Check className="text-ever-green-dark mx-auto size-4" /> : <span className="text-neutral-vivid">—</span>}
+                  </td>
+                  <td className="p-5 text-center">
+                    {row.basic ? <Check className="text-ever-green-dark mx-auto size-4" /> : <span className="text-neutral-vivid">—</span>}
+                  </td>
+                  <td className="bg-ever-green-light/60 p-5 text-center">
+                    {row.expert ? <Check className="text-ever-green-dark mx-auto size-4" /> : <span className="text-neutral-vivid">—</span>}
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td className="text-ever-green-very-dark p-5 text-sm font-bold">Preis</td>
+                <td className="p-5 text-center text-sm font-bold text-ever-green-very-dark">Kostenlos</td>
+                <td className="p-5 text-center text-sm font-bold text-ever-green-very-dark">ab 39,99 €</td>
+                <td className="bg-ever-green-light/60 p-5 text-center text-sm font-bold text-ever-green-very-dark">
+                  20 % der Erstattung, mind. 99,99 €
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </Section>
 
       {/* 9. Steuern einfach machen — full-bleed photo panel */}
       <Section tone="light">
         <div className="grid items-center gap-10 md:grid-cols-2">
-          <PhotoPlaceholder icon={Sofa} aspect="video" tone="light" />
+          <PhotoPlaceholder
+            icon={Sofa}
+            src={easyTaxesImage.src}
+            alt={easyTaxesImage.alt}
+            aspect="video"
+            tone="light"
+          />
           <div>
             <h2 className="font-heading text-ever-green-very-dark text-3xl">
               Steuern einfach machen.
             </h2>
             <p className="text-ever-green-very-dark mt-4 max-w-md">
-              Fragen beantworten, Belege hochladen, fertig — Taxfix übernimmt den Rest,
-              egal ob vom Sofa aus oder unterwegs.
+              Belege in der App speichern, ein paar Fragen beantworten oder an
+              unabhängige Experten abgeben. So würde er es machen.
             </p>
             <Button className="mt-6 rounded-full" asChild>
               <Link href="#preise">Jetzt kostenlos starten</Link>
@@ -373,18 +498,17 @@ export default function Home() {
       {/* 10. 90% empfehlen uns weiter */}
       <Section tone="white">
         <Eyebrow>Bewertungen</Eyebrow>
-        <h2 className="font-heading text-ever-green-very-dark mb-10 text-3xl">
-          90 % empfehlen uns weiter
+        <h2 className="font-heading text-ever-green-very-dark text-3xl">
+          90 % empfehlen uns weiter.
         </h2>
+        <p className="text-neutral-vivid mt-2 mb-10">
+          Über 90 % unserer Kund*innen würden Taxfix Freund*innen oder Kolleg*innen
+          weiterempfehlen.
+        </p>
         <div className="grid gap-6 md:grid-cols-3">
           {testimonials.map(({ name, source, quote }) => (
             <div key={name} className="rounded-3xl border border-neutral-calm bg-white p-8">
-              <div className="flex gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="fill-gold-vivid text-gold-vivid size-4" />
-                ))}
-              </div>
-              <p className="text-ever-green-very-dark mt-4 text-sm">&ldquo;{quote}&rdquo;</p>
+              <p className="text-ever-green-very-dark text-sm">&ldquo;{quote}&rdquo;</p>
               <div className="mt-4 flex items-center gap-2">
                 <span className="bg-ever-green-calm text-ever-green-very-dark flex size-7 items-center justify-center rounded-full text-xs font-bold">
                   {name.charAt(0)}
@@ -396,25 +520,30 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <p className="text-neutral-vivid mt-4 text-xs">
-          Illustrative Beispiel-Bewertungen — keine echten Taxfix-Rezensionen.
-        </p>
       </Section>
 
       {/* 11. Clever vorbereiten. Clever sparen */}
       <Section tone="vivid">
-        <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-          <FolderCheck className="text-ever-green-very-dark size-10" />
-          <h2 className="font-heading text-ever-green-very-dark mt-4 text-3xl">
-            Clever vorbereiten. Clever sparen.
-          </h2>
-          <p className="text-ever-green-very-dark mt-4">
-            Belege das Jahr über sammeln, direkt in der App ablegen — und bei der
-            Steuererklärung profitieren.
-          </p>
-          <Button variant="secondary" className="mt-6 rounded-full" asChild>
-            <Link href="#preise">Jetzt starten</Link>
-          </Button>
+        <div className="mx-auto grid max-w-4xl items-center gap-8 md:grid-cols-2">
+          <PhotoPlaceholder
+            icon={FolderCheck}
+            src={saveDocumentsImage.src}
+            alt={saveDocumentsImage.alt}
+            aspect="video"
+            tone="vivid"
+          />
+          <div>
+            <h2 className="font-heading text-ever-green-very-dark text-3xl">
+              Clever vorbereiten. Clever sparen.
+            </h2>
+            <p className="text-ever-green-very-dark mt-4">
+              Fotografiere, kategorisiere und speichere deine Belege direkt, wenn du sie
+              bekommst. So kannst du bei der nächsten Steuer noch einfacher Geld sparen.
+            </p>
+            <Button variant="secondary" className="mt-6 rounded-full" asChild>
+              <Link href="#preise">Jetzt starten</Link>
+            </Button>
+          </div>
         </div>
       </Section>
 
@@ -424,18 +553,63 @@ export default function Home() {
         <h2 className="font-heading text-ever-green-very-dark mb-10 text-3xl">
           Ausgezeichnete Qualität
         </h2>
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
-          {["ELSTER", "Finanztest", "Beste Bewertungen", "Made in Germany"].map((label) => (
-            <div
-              key={label}
-              className="flex flex-col items-center gap-2 rounded-2xl border border-neutral-calm p-6 text-center"
-            >
-              <Award className="text-ever-green-dark size-6" />
-              <span className="text-ever-green-very-dark text-xs font-semibold">
-                {label}
-              </span>
-            </div>
-          ))}
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
+          <div className="rounded-2xl border border-neutral-calm p-6 text-center">
+            <PhotoPlaceholder
+              icon={Award}
+              src={elsterBadge.src}
+              alt={elsterBadge.alt}
+              aspect="square"
+              className="mx-auto mb-3 size-10"
+              rounded="rounded-lg"
+            />
+            <p className="text-ever-green-very-dark text-xs font-semibold">Elster</p>
+            <p className="text-neutral-vivid mt-1 text-xs">
+              Dank API-Schnittstelle zu ELSTER werden deine Daten sicher ans Finanzamt
+              übermittelt.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-neutral-calm p-6 text-center">
+            <PhotoPlaceholder
+              icon={Award}
+              src={finanztipBadge.src}
+              alt={finanztipBadge.alt}
+              aspect="square"
+              className="mx-auto mb-3 size-10"
+              rounded="rounded-lg"
+            />
+            <p className="text-ever-green-very-dark text-xs font-semibold">Finanztip</p>
+            <p className="text-neutral-vivid mt-1 text-xs">
+              Das Verbraucher-Magazin Finanztip empfiehlt Taxfix als Steuersoftware für
+              einfache Steuererklärungen.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-neutral-calm p-6 text-center">
+            <PhotoPlaceholder
+              icon={Award}
+              src={ratingsBadge.src}
+              alt={ratingsBadge.alt}
+              aspect="square"
+              className="mx-auto mb-3 size-10"
+              rounded="rounded-lg"
+            />
+            <p className="text-ever-green-very-dark text-xs font-semibold">
+              Beste Bewertungen
+            </p>
+            <p className="text-neutral-vivid mt-1 text-xs">
+              Über 255.000 Bewertungen und eine durchschnittliche Bewertung von 4,7
+              Sternen.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-neutral-calm p-6 text-center">
+            <Award className="text-ever-green-dark mx-auto mb-3 size-10" />
+            <p className="text-ever-green-very-dark text-xs font-semibold">
+              Made in Germany
+            </p>
+            <p className="text-neutral-vivid mt-1 text-xs">
+              Innovation trifft Qualität. Taxfix wird in Berlin entwickelt und designed.
+            </p>
+          </div>
         </div>
       </Section>
 
