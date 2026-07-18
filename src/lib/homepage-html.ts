@@ -39,6 +39,10 @@ import { join } from "path";
  *     which renders as an empty glyph box, not a missing-asset error.
  *     Fixed by re-declaring the same font-family pointing at a
  *     same-origin copy in public/fonts/.
+ *  7. Appends the same disclaimer/credit strip used on the two hand-built
+ *     pages (src/components/site/footer.tsx), in a visually distinct
+ *     background so it reads as this prototype's own addition rather
+ *     than part of the real Taxfix footer above it.
  *
  * public/home.html itself is never written to by this function.
  */
@@ -115,6 +119,20 @@ export function buildHomepageHtml(): string {
   html = html.replace(
     "</head>",
     `<style>@font-face{font-family:"Font Awesome 6 Sharp";font-style:normal;font-weight:400;font-display:block;src:url(/fonts/fa-sharp-regular-400.woff2) format("woff2")}@font-face{font-family:"Font Awesome 6 Sharp";font-style:normal;font-weight:900;font-display:block;src:url(/fonts/fa-sharp-solid-900.woff2) format("woff2")}</style></head>`
+  );
+
+  // 7. Disclaimer/credit strip, same wording as the two hand-built pages'
+  //    SiteFooter (src/components/site/footer.tsx), appended after the
+  //    real page's own real footer. Distinct background (Gold-light,
+  //    #FFEFD3 — a real Taxfix accent token, just not one used in a block
+  //    this size elsewhere on the page) so it reads as this prototype's
+  //    own addition, not part of the real Taxfix footer above it.
+  html = html.replace(
+    "</body>",
+    `<div style="background:#FFEFD3;color:#154618;text-align:center;padding:22px 16px;font:14px/1.6 system-ui,sans-serif;">` +
+      `<p style="margin:0 0 6px;">© Taxfix SE — Unofficial prototype for a Taxfix product case study, not affiliated with or endorsed by Taxfix.</p>` +
+      `<p style="margin:0;">Built by <a href="https://helmutfritz.fyi/" style="color:#154618;font-weight:600;text-decoration:underline;">Helmut Fritz</a> using AI tools · 2026</p>` +
+      `</div></body>`
   );
 
   // Small, visibly-distinct affordance (not part of the real page) so the
