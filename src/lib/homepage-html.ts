@@ -7,9 +7,10 @@ import { join } from "path";
  *
  *  1. Points the one real stylesheet link at taxfix.de directly, since the
  *     snapshot's root-relative /_next/static/... path only resolves on
- *     their own domain. Their CSS's own internal font/asset urls() resolve
- *     against that same absolute origin automatically — no further rewrites
- *     needed for styling to render correctly.
+ *     their own domain. Most of that CSS's own internal font/asset urls()
+ *     resolve against that same absolute origin automatically — except one
+ *     case handled separately in step 6 below, where cross-origin CORS
+ *     rules block a font file even though the URL itself resolves fine.
  *  2. Strips every <script> tag. The real page's JS drives client-side
  *     hydration, analytics, and live calls to Taxfix's own backend — none
  *     of which belong in a static portfolio prototype. This is a static
@@ -30,6 +31,14 @@ import { join } from "path";
  *     <img>), so stripping <script> in step 2 left it genuinely empty,
  *     not just broken. Replaced with a static graphic matching the
  *     project owner's reference screenshot.
+ *  6. Self-hosts the Font Awesome "Sharp" icon font (checkmarks, the
+ *     pricing-ribbon circle, the hero alert icon). The real font file has
+ *     no Access-Control-Allow-Origin header, so browsers block it on any
+ *     origin other than taxfix.de itself — it loads fine as a plain
+ *     request (confirmed with curl) but is refused as a font source,
+ *     which renders as an empty glyph box, not a missing-asset error.
+ *     Fixed by re-declaring the same font-family pointing at a
+ *     same-origin copy in public/fonts/.
  *
  * public/home.html itself is never written to by this function.
  */
@@ -94,6 +103,20 @@ export function buildHomepageHtml(): string {
   //    present — the replacements above operate on plain text/regex).
   html = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
 
+  // 6. Self-hosted override for the Font Awesome "Sharp" icon font (the
+  //    checkmarks, the pricing-ribbon circle, the hero alert icon). The
+  //    real font file loads fine as a plain request but has no
+  //    Access-Control-Allow-Origin header, and browsers require CORS
+  //    approval for cross-origin @font-face files specifically — so on
+  //    any origin other than taxfix.de itself, it silently fails and
+  //    those icons render as empty glyph boxes. Declaring the same
+  //    font-family again, pointing at a same-origin copy in public/fonts,
+  //    gives the browser a source it's actually allowed to use.
+  html = html.replace(
+    "</head>",
+    `<style>@font-face{font-family:"Font Awesome 6 Sharp";font-style:normal;font-weight:400;font-display:block;src:url(/fonts/fa-sharp-regular-400.woff2) format("woff2")}@font-face{font-family:"Font Awesome 6 Sharp";font-style:normal;font-weight:900;font-display:block;src:url(/fonts/fa-sharp-solid-900.woff2) format("woff2")}</style></head>`
+  );
+
   // Small, visibly-distinct affordance (not part of the real page) so the
   // premium landing page and process page are reachable from here.
   html = html.replace(
@@ -108,6 +131,6 @@ export function buildHomepageHtml(): string {
 // Static stand-in for the real page's "ø 1.240 € zurück" Lottie animation
 // (see step 5 above). Reuses the same class as the other cards' <img> so it
 // inherits identical real sizing/aspect-ratio/radius from the real CSS.
-const refundCardVisualHtml = `<div class="MuiBox-root txfx-11ct1bk" style="position:relative;display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:#36893B;padding:24px;"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;opacity:0.55;"><path d="M-10,55 L55,-10 L115,-10 L30,90 Z" fill="#2c7031"></path></svg><div style="position:relative;font-size:clamp(30px,7vw,44px);font-weight:800;color:#ADEE68;line-height:1;">1.240&nbsp;€</div><div style="position:relative;margin-top:10px;font-size:15px;font-weight:600;color:#ffffff;">Deine Rückerstattung</div></div>`;
+const refundCardVisualHtml = `<div class="MuiBox-root txfx-11ct1bk" style="position:relative;display:flex;flex-direction:column;justify-content:center;overflow:hidden;background:#36893B;padding:24px;border-radius: 10px;"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;opacity:0.55;"><path d="M-10,55 L55,-10 L115,-10 L30,90 Z" fill="#2c7031"></path></svg><div style="position:relative;font-size:clamp(30px,7vw,44px);font-weight:800;color:#ADEE68;line-height:1;">1.240&nbsp;€</div><div style="position:relative;margin-top:10px;font-size:15px;font-weight:600;color:#ffffff;">Deine Rückerstattung</div></div>`;
 
 const premiumCardHtml = `<div class="MuiBox-root txfx-12bvtkg" data-pricing-carousel-card="true"><div class="MuiBox-root txfx-ip2vjx"><div class="MuiBox-root txfx-18kgieb"><div class="MuiBox-root txfx-ziy1eh"><div class="MuiBox-root txfx-uutr8q"><span class="fa-sharp fa-regular fa-circle txfx-ov2o8o" aria-hidden="true"></span>Neu</div></div><img class="MuiBox-root txfx-6jrdpz" loading="lazy" src="https://cdn-assets-dynamic.frontify.com/4001988/eyJhc3NldF9pZCI6MTIzODUsInNjb3BlIjoiYXNzZXQ6dmlldyJ9:taxfix-gmbh:b5iAai9Vfe1sOZtvHA5YqUDix8nsZ0q595tgkRVikGo?format=webp&amp;quality=70" alt="Premium Experten-Service"/></div><div class="MuiBox-root txfx-33fgdw"><div class="MuiBox-root txfx-gvkce2"><h3 class="MuiTypography-root MuiTypography-body txfx-2g11zv">Premium Experten-Service</h3></div><div class="MuiBox-root txfx-1x6lh4h" aria-live="polite"><span class="MuiTypography-root MuiTypography-body txfx-17ltxy3" data-testid="price-value">449 €</span></div><div class="MuiBox-root txfx-ac9oa5"><a class="MuiButtonBase-root MuiButton-root MuiButton-base MuiButton-basePrimary MuiButton-sizeCompact MuiButton-baseSizeCompact MuiButton-colorPrimary MuiButton-root MuiButton-base MuiButton-basePrimary MuiButton-sizeCompact MuiButton-baseSizeCompact MuiButton-colorPrimary txfx-7wfbga" tabindex="0" href="/experten-service-premium">Jetzt starten</a><div class="MuiBox-root txfx-1f4mn8g"><a class="MuiTypography-root MuiTypography-link MuiLink-root MuiLink-underlineAlways txfx-vdjk0r" href="/experten-service-premium">Mehr erfahren</a></div></div><div class="MuiBox-root txfx-yd8sa2"><div class="MuiBox-root txfx-6lvqsk"><div class="MuiBox-root txfx-1xl0orb"><span class="fa-sharp fa-solid fa-circle-check txfx-ov2o8o" aria-hidden="true"></span></div><div class="txfx-1t524ej"><p><strong>Steuerberater*in mit Erfahrung</strong> in Selbstständigkeit &amp; Auslandsfällen</p></div></div><div class="MuiBox-root txfx-6lvqsk"><div class="MuiBox-root txfx-1xl0orb"><span class="fa-sharp fa-solid fa-circle-check txfx-ov2o8o" aria-hidden="true"></span></div><div class="txfx-1t524ej"><p><strong>Anlage S/G, EÜR &amp; Vorsteuerabzug</strong> inklusive</p></div></div><div class="MuiBox-root txfx-6lvqsk"><div class="MuiBox-root txfx-1xl0orb"><span class="fa-sharp fa-solid fa-circle-check txfx-ov2o8o" aria-hidden="true"></span></div><div class="txfx-1t524ej"><p><strong>DTA-Fälle &amp; Auslandsvermietung</strong> werden bearbeitet</p></div></div><div class="MuiBox-root txfx-6lvqsk"><div class="MuiBox-root txfx-1xl0orb"><span class="fa-sharp fa-solid fa-circle-check txfx-ov2o8o" aria-hidden="true"></span></div><div class="txfx-1t524ej"><p><strong>Komplexitäts-Check vor Start</strong> – Mehraufwand wird vorab transparent gemacht</p></div></div><div class="MuiBox-root txfx-6lvqsk"><div class="MuiBox-root txfx-1xl0orb"><span class="fa-sharp fa-solid fa-circle-check txfx-ov2o8o" aria-hidden="true"></span></div><div class="txfx-1t524ej"><p>Für <strong>Fälle, die der Standard-Experten-Service heute ablehnt</strong></p></div></div></div></div></div></div>`;
