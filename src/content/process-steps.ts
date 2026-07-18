@@ -213,4 +213,49 @@ hotlink vs. self-host vs. keep placeholders was a real decision,
 not something to pick silently again after the fidelity feedback —
 asked directly, got "hotlink the real CDN URLs," implemented it.`,
   },
+  {
+    id: "use-the-real-html",
+    title: "Stop rebuilding it — use the real HTML",
+    summary:
+      "Real copy and real hotlinked images still didn't read as truly 1:1. The fix was simpler than a third rebuild: use the actual saved page directly.",
+    detail: `"but it still looks different. Use @public/home.html.
+That's the html we need to use. Don't make changes to it"
+
+Two React rebuild passes had chased fidelity by approximating Taxfix's
+real component system in Tailwind — closer each time, but still an
+approximation of Material-UI markup and their own compiled CSS, not
+the thing itself. Handed the real saved HTML, the honest fix wasn't
+"rebuild more carefully" — it was "stop rebuilding, serve the real
+file."
+
+Constraint taken literally: public/home.html is never edited. Instead,
+a route handler (src/app/route.ts) reads it fresh on every request and
+transforms a copy in memory:
+
+1. Rewrite the one stylesheet <link> to an absolute taxfix.de URL —
+   the file's root-relative /_next/static/... path only resolves on
+   their own domain. Verified with curl before relying on it.
+2. Strip all <script> tags — their JS drives hydration, analytics,
+   and live calls to their backend, none of which belong in a static
+   clone of someone else's real site.
+3. Before stripping: grep found exactly 2 empty price spans and 3
+   empty counter spans — values Taxfix populates client-side. Rather
+   than leave them blank or guess, their real values were sitting in
+   an embedded JSON config block in the same file (endingNumber
+   5131812095, 90, 300 — real prices "ab 99,99 EUR" / "ab 39,99 EUR").
+   Extracted before the stripping step removed that script too.
+4. Verified the pricing-card and counter class names (e.g. txfx-
+   k5oe4d) are reused dozens of times across the page — Tailwind-
+   style atomic classes, not unique per-element IDs. Anchored every
+   replacement on the actual unique surrounding TEXT instead (a
+   German sentence, a card title) and checked each anchor's grep
+   count was exactly 1 before trusting it.
+5. Located the exact insertion point for the third pricing card with
+   a real div-depth walk (open/close tag counting from the "Basic"
+   card's start), not eyeballed nesting — then hand-wrote the new
+   card using the SAME real CSS classes as the existing two cards, so
+   it inherits identical real styling rather than approximating it.
+6. Checked total <div> open/close counts balanced across the full
+   transformed output before calling it done.`,
+  },
 ];
