@@ -1,3 +1,6 @@
+import type { LucideIcon } from "lucide-react";
+import { UserRound, ListChecks, Globe2 } from "lucide-react";
+
 export interface PricingCard {
   id: string;
   eyebrow?: string;
@@ -9,11 +12,13 @@ export interface PricingCard {
   ctaHref: string;
   highlighted?: boolean;
   isNew?: boolean;
+  icon: LucideIcon;
 }
 
 export const pricingCards: PricingCard[] = [
   {
     id: "experten-service",
+    icon: UserRound,
     title: "Experten-Service",
     price: "ab 99,99 €",
     priceNote: "oder 20 % deiner Erstattung",
@@ -30,6 +35,7 @@ export const pricingCards: PricingCard[] = [
   },
   {
     id: "basic",
+    icon: ListChecks,
     title: "Basic",
     price: "ab 39,99 €",
     features: [
@@ -43,6 +49,7 @@ export const pricingCards: PricingCard[] = [
   },
   {
     id: "premium",
+    icon: Globe2,
     eyebrow: "Neu",
     title: "Premium Experten-Service",
     price: "449 €",

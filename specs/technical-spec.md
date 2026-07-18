@@ -21,16 +21,19 @@ A static, three-route Next.js prototype: a cloned homepage with one added pricin
 ## Goals
 
 - Three working routes, navigable, deployed to Vercel.
-- Visually faithful to the live Taxfix homepage for the cloned sections (per `specs/reference/homepage-screenshot.png` and the verified brand tokens in `specs/ui-spec.md`).
+- **Structural 1:1 fidelity to the live taxfix.de homepage for the cloned page**: same section count, same section order, same composition per section (full-bleed photo overlays, illustration bands on cards, multi-row comparison grids, stat rows) — per `specs/reference/homepage-screenshot.png`. This is a direct requirement from the original brief ("makes a 1:1 copy of the landing page"), not a nice-to-have — do not quietly narrow it to "on-brand and structurally similar." If a section is skipped or restructured, that's a decision to surface explicitly, not to bury in this file.
+- Brand tokens (color/type) verified against the real rebrand system in `specs/ui-spec.md`.
 - Content (prompts/workflow) on the process page is real — pulled from this actual build, not fabricated.
 
 ## Non-Goals
+
+Narrow and specific — do not read these as license to skip layout/section fidelity above:
 
 - No CMS, no database, no API routes with real logic.
 - No real checkout/payment flow on the premium landing page — CTA can exist, doesn't need to submit anything.
 - No auth, no user accounts.
 - No pixel-perfect reproduction of the real Taxfix wordmark/icon-mark artwork (per the brand-kit's licensing caveat) — a simplified text/geometric lockup stands in for the trademarked logo.
-- No licensed Taxfix photography — placeholder/stock imagery approximating the mood (per `specs/ui-spec.md` Aesthetic Direction), not the real photos.
+- No licensed Taxfix photography or unverified stock images — real photo sections are reproduced as clearly-placeholder photo panels (correct aspect ratio and position, not real or pretend-real images), per `src/components/site/photo-placeholder.tsx`. This affects imagery only, not section count, order, or layout composition, all of which should still match the live page.
 
 ## Current System
 
@@ -116,8 +119,9 @@ Deploy to Vercel directly from this repo. No feature flags, no phased rollout �
 - **Typed content files vs. inline JSX:** chosen for reuse (the same pricing-card data feeds both the homepage card and, indirectly, the premium landing page's framing) and because it makes the process-page steps easy to extend as the build continues without touching component code.
 - **No CMS:** would be over-engineering for a prototype with a fixed, small content set built by one person.
 - **Font fallback (Archivo) instead of licensed ROM:** ROM is proprietary and unavailable; Archivo is the fallback the brand-kit itself recommends.
+- **Photo-shaped placeholder blocks instead of real/stock photography:** the first build draft dropped several real sections and flattened photo-driven compositions into icon-in-a-box treatments, and was called out as not actually a 1:1 clone. Rebuilt with `PhotoPlaceholder` — duotone gradient blocks sized and positioned exactly where the real photos sit — so section count, order, and layout composition match the live page even though the imagery itself is a stand-in. If real imagery is wanted later, swapping `PhotoPlaceholder` for `next/image` is a local change, not a restructure.
 
 ## Open Questions
 
 - [ ] Exact URL slug for the premium landing page (currently `/experten-service-premium` — placeholder, can rename)
-- [ ] Final placeholder imagery source (need something for hero/testimonial photography that approximates the live site without using real Taxfix photos)
+- [ ] Whether to source real (licensed or free-to-use, verified) photography to replace the placeholder panels before this is shown to the panel
