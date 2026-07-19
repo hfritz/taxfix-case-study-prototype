@@ -144,11 +144,14 @@ export function buildHomepageHtml(): string {
       `</div></body>`
   );
 
-  // Small, visibly-distinct affordance (not part of the real page) so the
-  // premium landing page and process page are reachable from here.
+  // Small, visibly-distinct affordance (not part of the real page): one
+  // anchors down to the real pricing section (reusing its own real id,
+  // "Faire Preise, Top-Leistung", percent-encoded since it contains a
+  // space and a comma — not adding a new id, just linking to the one
+  // already there), the other links out to the process page.
   html = html.replace(
     "</body>",
-    `<a href="/experten-service-premium" style="position:fixed;bottom:16px;left:16px;z-index:9999;background:#154618;color:#ADEE68;font:600 13px system-ui;padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">Premium-Fall ansehen →</a>` +
+    `<a href="/#Faire%20Preise%2C%20Top-Leistung" style="position:fixed;bottom:16px;left:16px;z-index:9999;background:#154618;color:#ADEE68;font:600 13px system-ui;padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">Case Study Solution →</a>` +
       `<a href="/process" style="position:fixed;bottom:16px;right:16px;z-index:9999;background:#154618;color:#ADEE68;font:600 13px system-ui;padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">Wie das gebaut wurde →</a></body>`
   );
 
