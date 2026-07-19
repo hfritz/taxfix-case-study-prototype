@@ -50,3 +50,18 @@ export const realStylesheetLink =
  * for why the real font file is blocked by CORS on any origin but theirs. */
 export const fontAwesomeOverride =
   '<style>@font-face{font-family:"Font Awesome 6 Sharp";font-style:normal;font-weight:400;font-display:block;src:url(/fonts/fa-sharp-regular-400.woff2) format("woff2")}@font-face{font-family:"Font Awesome 6 Sharp";font-style:normal;font-weight:900;font-display:block;src:url(/fonts/fa-sharp-solid-900.woff2) format("woff2")}</style>';
+
+/** Every icon in the real footer (brand mark, language flags, social icons)
+ * uses the MuiSvgIcon-fontSizeInherit variant, which sizes itself off
+ * `font-size: inherit` — but the pixel-size rule for that context lives in
+ * CSS/JS the real site injects at runtime that we deliberately don't run
+ * (see homepage-html.ts step 2). With nothing to inherit, they fall back
+ * to whatever ambient font-size happens to be nearby and render at
+ * whatever size that implies — which is how they end up filling the
+ * container instead of sitting at their intended small size. The header
+ * icons don't have this problem because they carry their own explicit
+ * pixel-based rules, not just the inherit variant. Fixed with explicit,
+ * !important sizing keyed to data-testid, since those are stable across
+ * a home.html re-save in a way the hashed classes aren't. */
+export const footerIconSizeFix =
+  '<style>[data-testid="footer-logo-image"]{width:40px!important;height:40px!important;}[data-testid$="Flag"]{width:28px!important;height:28px!important;}[data-testid="FacebookIcon"],[data-testid="LinkedInIcon"],[data-testid="YoutubeIcon"],[data-testid="InstagramIcon"]{width:22px!important;height:22px!important;}</style>';

@@ -3,6 +3,7 @@ import {
   getRealFooter,
   realStylesheetLink,
   fontAwesomeOverride,
+  footerIconSizeFix,
 } from "@/lib/real-taxfix-chrome";
 import { premiumCardHtml } from "@/lib/premium-card-html";
 import { comparisonRows } from "@/content/comparison";
@@ -80,6 +81,7 @@ export function buildPremiumPageHtml(): string {
   <meta name="description" content="Der Premium Experten-Service für Selbstständige mit Auslandsbezug — Case-Study-Prototyp."/>
   ${realStylesheetLink}
   ${fontAwesomeOverride}
+  ${footerIconSizeFix}
   <style>
     body{margin:0;}
     .px-section{padding:80px 24px;}

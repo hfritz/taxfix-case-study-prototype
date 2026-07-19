@@ -1,7 +1,10 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 import { premiumCardHtml } from "@/lib/premium-card-html";
-import { fontAwesomeOverride } from "@/lib/real-taxfix-chrome";
+import {
+  fontAwesomeOverride,
+  footerIconSizeFix,
+} from "@/lib/real-taxfix-chrome";
 
 /**
  * Turns the real, unmodified taxfix.de HTML snapshot (public/home.html —
@@ -45,6 +48,12 @@ import { fontAwesomeOverride } from "@/lib/real-taxfix-chrome";
  *     pages (src/components/site/footer.tsx), in a visually distinct
  *     background so it reads as this prototype's own addition rather
  *     than part of the real Taxfix footer above it.
+ *  8. Fixes the real footer's icons (brand mark, language flags, social
+ *     icons), which use a `font-size: inherit`-based sizing variant whose
+ *     actual pixel value lives in CSS/JS we deliberately don't load —
+ *     without it they were rendering at whatever ambient font-size was
+ *     nearby, filling the whole width of the page instead of sitting at
+ *     icon size. See real-taxfix-chrome.ts's footerIconSizeFix.
  *
  * public/home.html itself is never written to by this function.
  */
@@ -131,7 +140,10 @@ export function buildHomepageHtml(): string {
   //    those icons render as empty glyph boxes. Declaring the same
   //    font-family again, pointing at a same-origin copy in public/fonts,
   //    gives the browser a source it's actually allowed to use.
-  html = html.replace("</head>", `${fontAwesomeOverride}</head>`);
+  html = html.replace(
+    "</head>",
+    `${fontAwesomeOverride}${footerIconSizeFix}</head>`
+  );
 
   // 7. Disclaimer/credit strip, same wording as the two hand-built pages'
   //    SiteFooter (src/components/site/footer.tsx), appended after the
