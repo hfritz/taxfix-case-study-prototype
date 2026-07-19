@@ -84,20 +84,24 @@ export function buildHomepageHtml(): string {
     `$1${"ab 39,99 €"}$2`
   );
 
-  // 4. Insert the Premium card as a third sibling INSIDE the pricing grid
+  // 4. Insert the Premium card as the FIRST sibling inside the pricing grid
   //    region (.txfx-1058sb2 — a CSS Subgrid container each card's row
-  //    tracks are inherited from). Of the 7 closing </div> between Basic's
-  //    last feature and the carousel's prev/next buttons, exactly 6 close
-  //    Basic's own card and the 7th closes the region itself — verified by
-  //    walking the real tag tree, not counted by eye. Anchoring on only
-  //    those 6 (NOT including the region's own closing </div>, which must
-  //    stay after the inserted card, not before it) — an earlier version
-  //    anchored on all 7, landing the card OUTSIDE the region as a
-  //    floating sibling with no grid to inherit from, which is why it
-  //    rendered as a collapsed sliver instead of a third column.
+  //    tracks are inherited from; grid-auto-flow:column means DOM order is
+  //    display order, so putting it first in the markup puts it first
+  //    visually). Anchored on the region's own opening tag immediately
+  //    followed by the Experten-Service card's opening tag — verified
+  //    unique. (Previously inserted last, after Basic — see git history if
+  //    that placement is wanted back; the earlier anchor logic there also
+  //    documents a real bug about the region's closing </div> that's worth
+  //    reading before touching this again.)
   const insertAnchor =
-    "Werte aus dem Vorjahr übernehmen</p></div></div></div></div></div></div>";
-  html = html.replace(insertAnchor, insertAnchor + premiumCardHtml);
+    '<div class="MuiBox-root txfx-1058sb2" role="region" style="--card-width:min(340px, 80vw)"><div class="MuiBox-root txfx-12bvtkg" data-pricing-carousel-card="true">';
+  html = html.replace(
+    insertAnchor,
+    '<div class="MuiBox-root txfx-1058sb2" role="region" style="--card-width:min(340px, 80vw)">' +
+      premiumCardHtml +
+      '<div class="MuiBox-root txfx-12bvtkg" data-pricing-carousel-card="true">'
+  );
 
   // 5. Fill the "ø 1.240 € zurück" card's missing visual (real asset is a
   //    Lottie animation, never a static <img>). Anchored on the card's
