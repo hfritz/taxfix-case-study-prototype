@@ -350,8 +350,8 @@ const copyDe: PageCopy = {
   closingP:
     "Lass eine:n Steuerberater:in mit echter Erfahrung in Selbstständigkeit und internationalen Fällen einen Blick darauf werfen.",
   closingCta: "Premium-Fall prüfen lassen",
-  backHomeCta: "Zur Startseite →",
-  processCta: "Wie das gebaut wurde →",
+  backHomeCta: "Back to homepage →",
+  processCta: "How this was built →",
 };
 
 const copyEn: PageCopy = {
