@@ -51,7 +51,7 @@ export default function RootLayout({
         <TooltipProvider>
           <main className="flex-1">{children}</main>
           <footer className="border-t border-neutral-calm bg-white">
-            <div className="mx-auto max-w-6xl px-6 py-6 text-xs text-ever-green-very-dark">
+            <div className="mx-auto max-w-6xl px-6 py-6 text-center text-xs text-ever-green-very-dark">
               Built by{" "}
               <Link
                 href="https://helmutfritz.fyi/"
