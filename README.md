@@ -17,9 +17,9 @@ Taxfix's current Expert Service is priced flat and explicitly excludes self-empl
 
 Next.js (TypeScript, Tailwind, App Router), deployed to Vercel. No backend, no auth, no real payment flow — prototype-level only.
 
-## Getting started
+## Vercel link
 
-Coming soon — app not yet scaffolded.
+https://hf-taxfix-case-study.vercel.app/
 
 ---
 
