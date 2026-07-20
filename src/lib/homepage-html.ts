@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import { premiumCardHtml } from "@/lib/premium-card-html";
+import { getPremiumCardHtml } from "@/lib/premium-card-html";
 import {
   fontAwesomeOverride,
   footerIconSizeFix,
@@ -110,7 +110,7 @@ export function buildHomepageHtml(): string {
   html = html.replace(
     insertAnchor,
     '<div class="MuiBox-root txfx-1058sb2" role="region" style="--card-width:min(340px, 80vw)">' +
-      premiumCardHtml +
+      getPremiumCardHtml("de") +
       '<div class="MuiBox-root txfx-12bvtkg" data-pricing-carousel-card="true">'
   );
 

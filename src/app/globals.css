@@ -7,9 +7,13 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-body);
+  /* Real Taxfix type (ROM by ABC Dinamo) hotlinked from taxfix.de's own
+     stylesheet, same as homepage-html.ts and premium-page-html.ts — see
+     src/app/layout.tsx. Falls back to Archivo/Archivo Black (this repo's
+     own next/font, always available) if the live stylesheet doesn't load. */
+  --font-sans: var(--font-abc-rom, var(--font-body));
   --font-mono: var(--font-mono-stack);
-  --font-heading: var(--font-heading);
+  --font-heading: var(--font-abc-rom-condensed-heavy, var(--font-heading));
 
   /* Taxfix brand tokens — see specs/ui-spec.md */
   --color-ever-green-light: var(--ever-green-light);

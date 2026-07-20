@@ -29,7 +29,7 @@ export function ProcessStepItem({
         </span>
         <span className="flex-1">
           <span className="text-ever-green-very-dark block font-bold">{step.title}</span>
-          <span className="text-neutral-vivid mt-1 block text-sm">{step.summary}</span>
+          <span className="text-ever-green-very-dark mt-1 block text-sm">{step.summary}</span>
         </span>
         <ChevronDown
           className={cn(

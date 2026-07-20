@@ -92,12 +92,12 @@ Primary metric: gross margin per completed premium case reaches and holds ≥40%
 
 Input metrics: landing-page conversion rate on target-segment traffic ("Start my case" among self-identified self-employed + cross-border visitors) — cheap, pre-launch demand proxy.
 
-Guardrail metrics: LTV:CAC does not stay below ~2x — margin recovering doesn't matter if acquisition economics never do.
+Guardrail metrics: LTV:CAC does not stay below ~2x — margin recovering doesn't matter if acquisition economics never do. Currently ~2.7x at the decided €449 base case (recomputed via `pricing/premium_tier_unit_economics.py`'s formulas).
 
 ## Assumptions
 
 - Anlage S/G, EÜR, and DTA treaty cases plausibly require licensed *Steuerberater* capacity (Steuerberatervorbehalt), not Taxfix's generalist advisor pool used for standard employed-income returns — feeds directly into unit economics (higher advisor cost per case). No internal Taxfix data confirms advisor licensing mix; stated as an assumption.
-- The self-employed + cross-border intersection is a real but narrow TAM — needs at least a rough sizing before the pitch, so "narrow on purpose" doesn't read as "no addressable market."
+- The self-employed + cross-border intersection is a real but narrow TAM. Rough top-down sizing anchors on ~1.8M solo self-employed in Germany (Destatis 2024, 3.6% of the workforce — classification-agnostic, so it includes Gewerbetreibende, unlike the ~1.5M Freiberufler-only figure from BMWE/BFB), narrowed through regelbesteuert status (~60–75%), digital-services professions with cross-border reach (~15–25%), and an actual foreign client or income stream (~30–50%). Midpoint of each band lands on a central estimate of ~100,000 people; the full range implied by the stated bands' extremes is ~50,000–170,000. An estimate chain, not a measured figure, but enough to show "narrow on purpose" isn't "no addressable market." Full reasoning and sources in `specs/persona-lena.md`.
 - **Hours-per-case is the dominant, unvalidated input.** Tornado analysis shows hours-per-case swings gross margin by ~€300 vs. ~€250 for advisor rate and ~€20 for opex — it is the single input that most determines whether this tier is healthy. Base case (5 hrs, €60/hr advisor payout, €20 opex) is a placeholder, not Taxfix data.
 - At the base case, €449 nets ~28.7% gross margin — real, but below a typical 50%+ services-business bar. Accepted as an honest v1 starting point rather than forcing a higher price to hit an arbitrary margin target off an unverified hours assumption. To be revisited once real hours-per-case data exists from the first 15–20 cases.
 
@@ -106,7 +106,7 @@ Guardrail metrics: LTV:CAC does not stay below ~2x — margin recovering doesn't
 | Risk | Likelihood | Impact | Mitigation |
 |------|------------|--------|------------|
 | Hours-per-case runs higher than the 5-hr base case (e.g., 8 hrs on genuinely complex multi-country cases) | Medium | High — margin goes negative at every tested price point at 8 hrs | Complexity surcharge beyond 5 included hours, disclosed post-intake |
-| CAC/LTV does not clear a healthy bar — 0.6x LTV:CAC at placeholder €90 CAC vs. a ~3x bar, well under target | Medium | High — distinct from the margin problem, not solved by price or hour-banding | Treat as separate open risk; use the landing page itself as a cheap pre-launch signal on real lead cost and willingness-to-pay before committing to paid acquisition spend |
+| CAC/LTV is close to but still under a healthy bar — ~2.7x LTV:CAC at placeholder €90 CAC vs. a ~3x target, at the decided €449 price | Medium | Medium — distinct from the margin problem, not solved by price or hour-banding | Treat as separate open risk; use the landing page itself as a cheap pre-launch signal on real lead cost and willingness-to-pay before committing to paid acquisition spend |
 
 ## Launch Plan
 
