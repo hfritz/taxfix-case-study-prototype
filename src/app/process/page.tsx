@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import Link from "next/link";
 import { Section, Eyebrow } from "@/components/site/section";
 import { ProcessStepItem } from "@/components/site/process-step";
@@ -6,6 +8,7 @@ import { GlossedText } from "@/components/site/glossed-text";
 import { ProcessNav } from "@/components/site/process-nav";
 import { PriceProvider } from "@/components/site/price-context";
 import { PenetrationTable } from "@/components/site/penetration-table";
+import { PrdViewer } from "@/components/site/prd-viewer";
 import { processSteps } from "@/content/process-steps";
 import { persona } from "@/content/persona";
 import { toolsUsed } from "@/content/tools";
@@ -13,6 +16,8 @@ import { toolsUsed } from "@/content/tools";
 const count = new Intl.NumberFormat("en-US");
 
 export default function ProcessPage() {
+  const prdMarkdown = fs.readFileSync(path.join(process.cwd(), "specs/PRD.md"), "utf-8");
+
   return (
     <PriceProvider>
       <ProcessNav />
@@ -27,7 +32,7 @@ export default function ProcessPage() {
       <Section tone="dark" fullBleed className="pt-20 pb-16">
         <div className="mx-auto max-w-2xl px-6 text-center">
           <Eyebrow className="text-ever-green-vivid justify-center">
-            How this prototype came to be
+            A hiring case-study prototype
           </Eyebrow>
           <h1 className="font-heading text-3xl text-white md:text-5xl">
             The process, step by step.
@@ -37,6 +42,23 @@ export default function ProcessPage() {
             built. Each step below can be expanded to show the actual prompt or workflow
             behind it, not smoothed over after the fact.
           </p>
+        </div>
+      </Section>
+
+      <Section id="prd" tone="calm" className="scroll-mt-16">
+        <div className="mx-auto max-w-3xl">
+          <Eyebrow>The PRD</Eyebrow>
+          <h2 className="font-heading text-ever-green-very-dark text-2xl md:text-3xl">
+            The actual product requirements doc behind this build.
+          </h2>
+          <p className="text-ever-green-very-dark mt-4 text-sm leading-relaxed">
+            Reverse-engineered from the specs after the persona and pricing work was already
+            done, then used as the single reviewable source of truth for scope, value
+            proposition, and release plan.
+          </p>
+          <div className="mt-6">
+            <PrdViewer markdown={prdMarkdown} />
+          </div>
         </div>
       </Section>
 

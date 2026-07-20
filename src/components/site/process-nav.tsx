@@ -1,4 +1,5 @@
 const NAV_LINKS = [
+  { href: "#prd", label: "PRD" },
   { href: "#persona", label: "Persona" },
   { href: "#opportunity", label: "Opportunity" },
   { href: "#pricing", label: "Pricing logic" },
