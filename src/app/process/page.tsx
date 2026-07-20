@@ -29,32 +29,15 @@ export default function ProcessPage() {
         Back to homepage →
       </Link>
 
-      <Section tone="dark" fullBleed className="pt-20 pb-16">
-        <div className="mx-auto max-w-2xl px-6 text-center">
-          <Eyebrow className="text-ever-green-vivid justify-center">
-            A hiring case-study prototype
-          </Eyebrow>
-          <h1 className="font-heading text-3xl text-white md:text-5xl">
-            The process, step by step.
-          </h1>
-          <p className="mt-6 text-neutral-light/80">
-            For this case study, what matters isn&apos;t just the result, but how it was
-            built. Each step below can be expanded to show the actual prompt or workflow
-            behind it, not smoothed over after the fact.
-          </p>
-        </div>
-      </Section>
-
-      <Section id="prd" tone="calm" className="scroll-mt-16">
+      <Section id="prd" tone="dark" className="scroll-mt-16">
         <div className="mx-auto max-w-3xl">
-          <Eyebrow>The PRD</Eyebrow>
-          <h2 className="font-heading text-ever-green-very-dark text-2xl md:text-3xl">
+          <Eyebrow className="text-ever-green-vivid justify-center">The PRD</Eyebrow>
+          <h2 className="font-heading text-white text-2xl md:text-3xl">
             The actual product requirements doc behind this build.
           </h2>
-          <p className="text-ever-green-very-dark mt-4 text-sm leading-relaxed">
-            Reverse-engineered from the specs after the persona and pricing work was already
-            done, then used as the single reviewable source of truth for scope, value
-            proposition, and release plan.
+          <p className="text-neutral-light/80 mt-4 text-sm leading-relaxed">
+            Used as the single reviewable source of truth for scope, value
+            proposition, and development plan.
           </p>
           <div className="mt-6">
             <PrdViewer markdown={prdMarkdown} />
