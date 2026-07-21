@@ -284,6 +284,20 @@ export const REAL_STYLESHEET_URL = "https://taxfix.de/_next/static/css/796be0157
  * route handlers building raw HTML (homepage-html.ts, premium-page-html.ts). */
 export const realStylesheetLink = `<link rel="stylesheet" href="${REAL_STYLESHEET_URL}"/>`;
 
+/** Rewrites every <a href="..."> in the given HTML to href="#", except hrefs
+ * `keepHref` says to leave alone (this prototype's own real internal
+ * navigation — floating buttons, the language switcher, the Premium card's
+ * link to /experten-service-premium — as opposed to real taxfix.de/app
+ * links riding along inside reused real markup, which shouldn't be
+ * clickable in a case-study prototype). Only ever matches <a> tags, so the
+ * real page's own <link> tags (stylesheet, preconnect, favicon, hreflang
+ * alternates) are never at risk regardless of how many of them there are. */
+export function neutralizeLinks(html: string, keepHref: (href: string) => boolean): string {
+  return html.replace(/(<a\b[^>]*\shref=)"([^"]*)"/gi, (match, prefix, href) =>
+    keepHref(href) ? match : `${prefix}"#"`
+  );
+}
+
 /** Self-hosted Font Awesome "Sharp" override — see homepage-html.ts step 6
  * for why the real font file is blocked by CORS on any origin but theirs. */
 export const fontAwesomeOverride =

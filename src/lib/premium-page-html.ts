@@ -8,6 +8,7 @@ import {
   realStylesheetLink,
   fontAwesomeOverride,
   footerIconSizeFix,
+  neutralizeLinks,
   type Locale,
 } from "@/lib/real-taxfix-chrome";
 import { getComparisonRows } from "@/content/comparison";
@@ -276,11 +277,11 @@ interface PageCopy {
   processIntro: string;
   processCta2: string;
   processSteps: ProcessStep[];
-  urgencyH2: string;
-  urgencyBody: string;
-  urgencyCta: string;
-  urgencyChipDate: string;
-  urgencyChipLabel: string;
+  waitlistH2: string;
+  waitlistBody: string;
+  waitlistEmailLabel: string;
+  waitlistConsentLabel: string;
+  waitlistSubmitCta: string;
   valueEyebrow: string;
   valueH2: string;
   valueIntro: string;
@@ -310,7 +311,7 @@ const copyDe: PageCopy = {
     "Für Selbstständige mit Kund*innen und Einkünften über Grenzen hinweg.",
   heroParagraph:
     "Du bist regelbesteuerte:r Freiberufler:in oder Einzelunternehmer:in, arbeitest mit Kund:innen im EU- oder Nicht-EU-Ausland und hast vielleicht eine zweite Einkunftsquelle im Ausland. Der Standard-Experten-Service lehnt diesen Fall heute ab. Der Premium Experten-Service ist genau dafür gebaut.",
-  heroCta: "Premium-Fall prüfen lassen",
+  heroCta: "In die Warteliste eintragen",
   heroTrustBullets: [
     "Diskret & sicher: höchste Sicherheitsstandards",
     "Spezialisiert auf Selbstständige mit Auslandsbezug",
@@ -323,14 +324,15 @@ const copyDe: PageCopy = {
   processH2: "So funktioniert der Premium Experten-Service",
   processIntro:
     "Von der Fallprüfung bis zur Abgabe: dein:e Steuerberater:in begleitet dich durch den gesamten Prozess.",
-  processCta2: "Premium-Fall prüfen lassen",
+  processCta2: "In die Warteliste eintragen",
   processSteps: processStepsDe,
-  urgencyH2: "Auch mit Auslandsbezug bleibt die Frist der 31.07.",
-  urgencyBody:
-    "Falsch zugeordnet verlierst du Zeit, die du vor der Frist nicht mehr hast. Lass deinen Fall vorab auf Komplexität prüfen — nicht erst nach der Absage.",
-  urgencyCta: "Jetzt Komplexität prüfen lassen",
-  urgencyChipDate: "31.07.",
-  urgencyChipLabel: "Steuerfrist",
+  waitlistH2: "Nutze den Premium Experten-Service vor allen anderen",
+  waitlistBody:
+    "Trag dich in die Warteliste ein und entdecke als Erste*r den Service für Selbstständige mit Auslandsbezug wie dich.",
+  waitlistEmailLabel: "Deine E-Mail-Adresse *",
+  waitlistConsentLabel:
+    "Ja, ich möchte über den neuen Premium Experten-Service per E-Mail informiert werden.",
+  waitlistSubmitCta: "Jetzt eintragen",
   valueEyebrow: "Zeit vs. Geld",
   valueH2: "Dein Fall kostet dich sonst mehr Zeit, als der Festpreis wert ist",
   valueIntro:
@@ -349,7 +351,7 @@ const copyDe: PageCopy = {
   closingH2: "Dein Fall ist kein Sonderfall für uns.",
   closingP:
     "Lass eine:n Steuerberater:in mit echter Erfahrung in Selbstständigkeit und internationalen Fällen einen Blick darauf werfen.",
-  closingCta: "Premium-Fall prüfen lassen",
+  closingCta: "In die Warteliste eintragen",
   backHomeCta: "Back to homepage →",
   processCta: "How this was built →",
 };
@@ -363,7 +365,7 @@ const copyEn: PageCopy = {
   heroH1: "For self-employed people with clients and income across borders.",
   heroParagraph:
     "You're a freelancer or sole trader under standard taxation, working with clients in the EU or outside it, and maybe have a second source of income abroad. The Standard Expert Service turns this case away today. The Premium Expert Service is built exactly for it.",
-  heroCta: "Get your case reviewed",
+  heroCta: "Join the waiting list",
   heroTrustBullets: [
     "Discreet & secure: highest security standards",
     "Specialized in self-employed, cross-border cases",
@@ -376,14 +378,15 @@ const copyEn: PageCopy = {
   processH2: "How the Premium Expert Service works",
   processIntro:
     "From the complexity check to filing: your tax advisor guides you through the whole process.",
-  processCta2: "Get your case reviewed",
+  processCta2: "Join the waiting list",
   processSteps: processStepsEn,
-  urgencyH2: "Even with income abroad, the deadline is still 31 July.",
-  urgencyBody:
-    "Get matched with the wrong service and you lose time you don't have before the deadline. Have your case checked for complexity up front — not after a rejection.",
-  urgencyCta: "Get your complexity checked now",
-  urgencyChipDate: "31 Jul",
-  urgencyChipLabel: "Tax deadline",
+  waitlistH2: "Get the Premium Expert Service before everyone else",
+  waitlistBody:
+    "Join the waiting list and be among the first to discover the service for self-employed people with cross-border income like you.",
+  waitlistEmailLabel: "Your email address *",
+  waitlistConsentLabel:
+    "Yes, I'd like to be informed about the new Premium Expert Service by email.",
+  waitlistSubmitCta: "Sign up now",
   valueEyebrow: "Time vs. money",
   valueH2: "Your case costs you more time than the fixed price is worth",
   valueIntro:
@@ -401,7 +404,7 @@ const copyEn: PageCopy = {
   closingH2: "Your case isn't a special case to us.",
   closingP:
     "Have a tax advisor with real experience in self-employment and international cases take a look.",
-  closingCta: "Get your case reviewed",
+  closingCta: "Join the waiting list",
   backHomeCta: "Back to homepage →",
   processCta: "How this was built →",
 };
@@ -511,7 +514,7 @@ export function buildPremiumPageHtml(locale: Locale = "de"): string {
   const header = getRealHeader(locale);
   const footer = getRealFooter(locale);
 
-  return `<!DOCTYPE html>
+  const head = `<!DOCTYPE html>
 <html lang="${copy.htmlLang}">
 <head>
   <meta charSet="utf-8"/>
@@ -538,8 +541,9 @@ export function buildPremiumPageHtml(locale: Locale = "de"): string {
     .px-process-sticky{position:sticky;top:24px;}
     @media (max-width:900px){.px-process-sticky{position:static;}}
   </style>
-</head>
-<body class="${getRealBodyFontClasses()}">
+</head>`;
+
+  const body = `<body class="${getRealBodyFontClasses()}">
   ${header}
   <main>
     <!-- Hero -->
@@ -549,7 +553,7 @@ export function buildPremiumPageHtml(locale: Locale = "de"): string {
           <span style="display:inline-block;background:#154618;color:#ADEE68;font-size:13px;font-weight:700;padding:6px 16px;border-radius:999px;margin-bottom:20px;">${copy.heroBadge}</span>
           <h1 style="font-size:clamp(30px,5vw,48px);font-weight:800;line-height:1.1;color:#154618;margin:0 0 20px;">${copy.heroH1}</h1>
           <p style="font-size:17px;line-height:1.6;color:#154618;margin:0 0 28px;max-width:520px;">${copy.heroParagraph}</p>
-          <a class="${primaryButtonClass} px-btn" style="background:#154618!important;color:#ADEE68!important;" href="#premium-preis" tabindex="0">${copy.heroCta}</a>
+          <a class="${primaryButtonClass} px-btn" style="background:#154618!important;color:#ADEE68!important;" href="#warteliste" tabindex="0">${copy.heroCta}</a>
           ${heroTrustBulletsHtml(copy)}
         </div>
         <div style="position:relative;">
@@ -584,28 +588,26 @@ export function buildPremiumPageHtml(locale: Locale = "de"): string {
           <span style="display:block;color:#36893B;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;margin-bottom:8px;">${copy.processEyebrow}</span>
           <h2 style="font-size:clamp(24px,4vw,32px);font-weight:800;color:#154618;margin:0 0 16px;">${copy.processH2}</h2>
           <p style="font-size:15px;color:#9A9288;line-height:1.6;margin:0 0 24px;max-width:360px;">${copy.processIntro}</p>
-          <a class="${primaryButtonClass} px-btn" href="#premium-preis" tabindex="0">${copy.processCta2}</a>
+          <a class="${primaryButtonClass} px-btn" href="#warteliste" tabindex="0">${copy.processCta2}</a>
         </div>
         <div>${processStepsHtml(copy.processSteps)}</div>
       </div>
     </section>
 
-    <!-- Urgency banner -->
-    <section class="px-section" style="background:#F8C677;">
+    <!-- Waitlist signup -->
+    <section class="px-section" id="warteliste" style="background:#FDF8F2;">
       <div class="px-container px-urgency-grid">
         <div>
-          <h2 style="font-size:clamp(24px,4vw,34px);font-weight:800;color:#154618;line-height:1.15;margin:0 0 16px;">${copy.urgencyH2}</h2>
-          <p style="font-size:15px;color:#154618;line-height:1.6;margin:0 0 24px;max-width:440px;">${copy.urgencyBody}</p>
-          <a class="${primaryButtonClass} px-btn" style="background:#ffffff!important;color:#154618!important;" href="#premium-preis" tabindex="0">${copy.urgencyCta}</a>
+          <h2 style="font-size:clamp(24px,4vw,34px);font-weight:800;color:#154618;line-height:1.15;margin:0 0 16px;">${copy.waitlistH2}</h2>
+          <p style="font-size:15px;color:#154618;line-height:1.6;margin:0;max-width:440px;">${copy.waitlistBody}</p>
         </div>
-        <div style="display:flex;justify-content:center;">
-          <div style="position:relative;width:180px;height:180px;">
-            <svg width="180" height="180" viewBox="0 0 180 180" aria-hidden="true">
-              <rect x="10" y="40" width="160" height="110" rx="14" fill="#ffffff" stroke="#154618" stroke-width="2"></rect>
-              <path d="M10 46 L90 110 L170 46" fill="none" stroke="#154618" stroke-width="2"></path>
-            </svg>
-            <div style="position:absolute;top:-14px;right:-10px;background:#154618;color:#ADEE68;font-size:13px;font-weight:800;padding:8px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.18);white-space:nowrap;">${copy.urgencyChipDate} · ${copy.urgencyChipLabel}</div>
-          </div>
+        <div>
+          <input type="email" placeholder="${copy.waitlistEmailLabel}" style="width:100%;box-sizing:border-box;padding:16px 18px;border:1px solid #EAE0D7;border-radius:12px;font-size:15px;color:#154618;background:#ffffff;margin-bottom:20px;" />
+          <label style="display:flex;align-items:flex-start;gap:12px;font-size:14px;color:#154618;line-height:1.5;margin-bottom:24px;cursor:pointer;">
+            <input type="checkbox" style="margin-top:3px;width:18px;height:18px;flex-shrink:0;accent-color:#154618;" />
+            <span>${copy.waitlistConsentLabel}</span>
+          </label>
+          <a class="${primaryButtonClass} px-btn" href="#" tabindex="0">${copy.waitlistSubmitCta}</a>
         </div>
       </div>
     </section>
@@ -654,7 +656,7 @@ export function buildPremiumPageHtml(locale: Locale = "de"): string {
       <div class="px-container" style="text-align:center;max-width:560px;">
         <h2 style="font-size:clamp(24px,4vw,32px);font-weight:800;color:#154618;margin:0 0 16px;">${copy.closingH2}</h2>
         <p style="font-size:16px;color:#154618;line-height:1.6;margin:0 0 28px;">${copy.closingP}</p>
-        <a class="${primaryButtonClass} px-btn" href="#premium-preis" tabindex="0">${copy.closingCta}</a>
+        <a class="${primaryButtonClass} px-btn" href="#warteliste" tabindex="0">${copy.closingCta}</a>
       </div>
     </section>
   </main>
@@ -662,9 +664,26 @@ export function buildPremiumPageHtml(locale: Locale = "de"): string {
   <div style="background:#FFEFD3;color:#154618;text-align:center;padding:22px 16px;font:14px/1.6 system-ui,sans-serif;">
     <p style="margin:0 0 6px;">© Taxfix SE — Unofficial prototype for a Taxfix product case study, not affiliated with or endorsed by Taxfix.</p>
     <p style="margin:0;">Built by <a href="https://helmutfritz.fyi/" style="color:#154618;font-weight:600;text-decoration:underline;">Helmut Fritz</a> using AI tools · 2026</p>
-  </div>
+  </div>`;
+
+  // Floating buttons are real internal navigation this prototype needs
+  // (unlike everything above, which either came along for the ride inside
+  // the real extracted header/footer, or points off to the real taxfix.de)
+  // — appended after neutralizeLinks() runs, so they're excluded by
+  // construction rather than by a regex exception.
+  const floatingButtons = `
   <a href="/" style="position:fixed;bottom:16px;left:16px;z-index:9999;background:#154618;color:#ADEE68;font:600 13px system-ui;padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">${copy.backHomeCta}</a>
-  <a href="/process" style="position:fixed;bottom:16px;right:16px;z-index:9999;background:#154618;color:#ADEE68;font:600 13px system-ui;padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">${copy.processCta}</a>
+  <a href="/process" style="position:fixed;bottom:16px;right:16px;z-index:9999;background:#154618;color:#ADEE68;font:600 13px system-ui;padding:10px 16px;border-radius:999px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.25)">${copy.processCta}</a>`;
+
+  return `${head}
+${neutralizeLinks(
+    body,
+    (href) =>
+      href.startsWith("?lang=") ||
+      href === "https://helmutfritz.fyi/" ||
+      href === "#warteliste"
+  )}
+  ${floatingButtons}
   ${languageSwitcherScript}
 </body>
 </html>`;

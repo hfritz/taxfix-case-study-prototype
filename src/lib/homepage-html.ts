@@ -4,6 +4,7 @@ import { getPremiumCardHtml } from "@/lib/premium-card-html";
 import {
   fontAwesomeOverride,
   footerIconSizeFix,
+  neutralizeLinks,
 } from "@/lib/real-taxfix-chrome";
 
 /**
@@ -157,6 +158,23 @@ export function buildHomepageHtml(): string {
       `<p style="margin:0 0 6px;">© Taxfix SE — Unofficial prototype for a Taxfix product case study, not affiliated with or endorsed by Taxfix.</p>` +
       `<p style="margin:0;">Built by <a href="https://helmutfritz.fyi/" style="color:#154618;font-weight:600;text-decoration:underline;">Helmut Fritz</a> using AI tools · 2026</p>` +
       `</div></body>`
+  );
+
+  // Neutralize every real link riding along inside the untouched real
+  // markup above (nav, footer, the Basic/Experten-Service cards' own real
+  // signup links, login, social icons, region switchers) — none of them
+  // should be clickable in a case-study prototype. Kept real: the Premium
+  // card's own two links (inserted in step 4, both pointing at
+  // /experten-service-premium — this prototype's own internal navigation
+  // to a page that genuinely exists, not a stray link into the real
+  // taxfix.de/app), and the Helmut Fritz credit link just added above
+  // (the project's standing attribution requirement, not a stray Taxfix
+  // link either). Placed here, before the floating buttons are appended
+  // below, so those stay real by construction rather than by a regex
+  // exception.
+  html = neutralizeLinks(
+    html,
+    (href) => href === "/experten-service-premium" || href === "https://helmutfritz.fyi/"
   );
 
   // Small, visibly-distinct affordance (not part of the real page): one
