@@ -31,6 +31,21 @@ import {
  *     the existing two cards so it inherits identical real styling. This
  *     is the one intentional content change the whole prototype exists to
  *     make — everything else above is fidelity plumbing, not editing.
+ *  4b. Repoints the real sticky alert banner at the top of the page (the
+ *     "Frist ist der 31.07.!" urgency bar) at the new Premium tier instead:
+ *     new German copy, background overridden from the real #CEF5A4 to
+ *     Gold-light (#FFEFD3, the same token used in step 7's disclaimer
+ *     strip) via an inline style (the real background lives on a shared
+ *     page-scoped CSS class rule that shouldn't be edited directly), and
+ *     the "!" urgency icon swapped for the same "Neu" pill used on the
+ *     Premium card in step 4, so the two premium-tier touchpoints on the
+ *     homepage read as one consistent visual story. The whole bar was
+ *     previously one giant <a> — visually indistinguishable from an inert
+ *     background strip — so it's changed to a plain, non-interactive <div>
+ *     with a single real "Mehr Details" text link (reusing the Premium
+ *     card's own "learn more" link style, txfx-vdjk0r, and pointing at
+ *     /experten-service-premium, already allowlisted in the
+ *     neutralizeLinks() call below) as the only clickable element inside.
  *  5. Fills in the "ø 1.240 € zurück" card under "Warum Taxfix zu dir
  *     passt", which has no static visual in the HTML at all — its real
  *     asset is a Lottie animation (a JS-rendered vector player, not an
@@ -113,6 +128,28 @@ export function buildHomepageHtml(): string {
     '<div class="MuiBox-root txfx-1058sb2" role="region" style="--card-width:min(340px, 80vw)">' +
       getPremiumCardHtml("de") +
       '<div class="MuiBox-root txfx-12bvtkg" data-pricing-carousel-card="true">'
+  );
+
+  // 4b. Repoint the real sticky alert banner at the Premium tier: new copy,
+  //     a Gold-light background overriding the real #CEF5A4 via inline
+  //     style (wins over the shared class rule by specificity, without
+  //     editing that rule itself), and the "!" urgency icon swapped for the
+  //     same "Neu" pill used on the Premium card (step 4 /
+  //     getPremiumCardHtml — minus that card's position:absolute wrapper,
+  //     txfx-ziy1eh, since this banner is a plain flex row, not a
+  //     relatively-positioned image container). The whole bar was
+  //     previously one giant <a>, which read as inert background rather
+  //     than an obviously clickable element — changed to a plain <div>
+  //     (drops MuiLink-root/MuiLink-underlineAlways along with the tag, so
+  //     nothing about it still looks or behaves like a link) with a single
+  //     real "Mehr Details" text link inside the copy, reusing the same
+  //     underlined-link class (txfx-vdjk0r) already used for the Premium
+  //     card's own "learn more" link, so only that phrase is clickable.
+  //     Anchored on the banner's original, verified-unique <a> block
+  //     (opening tag through its matching closing tag).
+  html = html.replace(
+    '<a class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways txfx-12jlkx" href="https://tfd.sng.link/Emfdu/zekb?_dl=https%3A%2F%2Fapp.taxfix.de%2Flogin&amp;_smtype=3"><div class="MuiGrid-root MuiGrid-direction-xs-row txfx-ti5bap"><span class="fa-sharp fa-regular fa-circle-exclamation txfx-835ac6" aria-hidden="true"></span><p class="MuiTypography-root MuiTypography-body txfx-1apweht">Im Schnitt 1.240 € zurück — aber nur wer einreicht, kriegt sie. Frist ist der 31.07.!</p></div></a>',
+    '<div class="MuiTypography-root MuiTypography-inherit txfx-12jlkx" style="background:#FFEFD3"><div class="MuiGrid-root MuiGrid-direction-xs-row txfx-ti5bap"><div class="MuiBox-root txfx-uutr8q" style="background:#F8A21A;color:#ffffff;border-color:#F8A21A;">Neu</div><p class="MuiTypography-root MuiTypography-body txfx-1apweht">Grenzüberschreitend selbstständig? Unser Experten-Service Premium matcht dich mit dem passenden Steuerberater. <a class="MuiTypography-root MuiTypography-link MuiLink-root MuiLink-underlineAlways txfx-vdjk0r" href="/experten-service-premium">Mehr Details</a></p></div></div>'
   );
 
   // 5. Fill the "ø 1.240 € zurück" card's missing visual (real asset is a
